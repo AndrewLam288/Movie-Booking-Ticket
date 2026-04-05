@@ -18,12 +18,17 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: ${JPA_DDL_AUTO:update}
+      ddl-auto: validate
     show-sql: ${JPA_SHOW_SQL:true}
     properties:
       hibernate:
         format_sql: ${JPA_FORMAT_SQL:true}
 
+  flyway:
+    enabled: true
+
 logging:
   level:
     root: ${LOG_LEVEL_ROOT:INFO}
+    org.flywaydb: INFO
+

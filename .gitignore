@@ -1,1 +1,13 @@
+# IntelliJ
+.idea/
+*.iml
+
+# Env
 .env
+
+# Backend build
+server/target/
+
+# Frontend build
+client/node_modules/
+client/dist/
