@@ -1,0 +1,24 @@
+services:
+
+# This service is for the PostgreSQL database.
+  postgres:
+    image: postgres:16
+    container_name: movie-booking-postgres
+    # restart policty to ensure container will turn back on if docker restarts. 
+    # Only if intention is to stop the container, it will not turn back on. 
+    restart: unless-stopped
+    # take the environment variables from the .env file
+    environment:
+    # tránh hardcode, lấy từ .env
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+      # mount a volume to persist the data of the database even if the container is stopped or removed. 
+      # The data will be stored in the local directory of the host machine. 
+    volumes:
+      - movie_booking_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  movie_booking_postgres_data:
