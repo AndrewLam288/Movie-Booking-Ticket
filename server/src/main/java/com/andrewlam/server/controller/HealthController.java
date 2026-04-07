@@ -1,4 +1,4 @@
-package com.andrewlam.server.domain.health;
+package com.andrewlam.server.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

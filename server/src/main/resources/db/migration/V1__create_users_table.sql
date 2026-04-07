@@ -1,0 +1,15 @@
+
+CREATE TABLE users (
+    id BIGSERIAL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    full_name VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(20),
+    role VARCHAR(50) NOT NULL DEFAULT 'CUSTOMER',
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT uq_users_email UNIQUE (email),
+    CONSTRAINT chk_users_role CHECK (role IN ('CUSTOMER', 'ADMIN'))
+);
