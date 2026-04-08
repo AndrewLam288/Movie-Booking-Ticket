@@ -5,7 +5,7 @@ CREATE TABLE showtimes (
     start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP NOT NULL,
     language VARCHAR(50) NOT NULL DEFAULT 'ORIGINAL',
-    format VARCHAR(50) NOT NULL DEFAULT '2D',
+    format VARCHAR(50) NOT NULL DEFAULT 'TWO_D',
     base_price NUMERIC(10, 2) NOT NULL,
     status VARCHAR(50) NOT NULL DEFAULT 'SCHEDULED',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -21,6 +21,6 @@ CREATE TABLE showtimes (
 
     CONSTRAINT chk_showtimes_time CHECK (end_time > start_time),
     CONSTRAINT chk_showtimes_price CHECK (base_price >= 0),
-    CONSTRAINT chk_showtimes_format CHECK (format IN ('2D', '3D', 'IMAX', '4DX')),
+    CONSTRAINT chk_showtimes_format CHECK (format IN ('TWO_D', 'THREE_D', 'IMAX', 'FOUR_DX')),
     CONSTRAINT chk_showtimes_status CHECK (status IN ('SCHEDULED', 'CANCELLED', 'COMPLETED'))
 );

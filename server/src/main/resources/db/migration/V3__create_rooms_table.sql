@@ -15,5 +15,5 @@ CREATE TABLE rooms (
 
     CONSTRAINT uq_rooms_cinema_name UNIQUE (cinema_id, name),
     CONSTRAINT chk_rooms_capacity CHECK (capacity > 0),
-    CONSTRAINT chk_rooms_type CHECK (room_type IN ('STANDARD', 'IMAX', 'VIP', '4DX'))
+    CONSTRAINT chk_rooms_type CHECK (room_type IN ('STANDARD', 'IMAX', 'VIP', 'FOUR_DX'))
 );
