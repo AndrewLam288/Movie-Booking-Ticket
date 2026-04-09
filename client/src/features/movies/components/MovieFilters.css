@@ -1,0 +1,60 @@
+.movie-filters {
+    min-width: 240px;
+}
+
+.movie-filters-card {
+    background: white;
+    border: 1px solid #dde4ef;
+    border-radius: 18px;
+    padding: 1rem;
+    position: sticky;
+    top: 130px;
+}
+
+.search-label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.search-label input {
+    padding: 0.8rem 0.9rem;
+    border-radius: 12px;
+    border: 1px solid #ccd6e3;
+    font-size: 0.95rem;
+}
+
+.filter-title {
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+}
+
+.status-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.status-filter-btn {
+    border: 1px solid #d7dfeb;
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 0.75rem 0.85rem;
+    text-align: left;
+    cursor: pointer;
+}
+
+.status-filter-btn.active {
+    background: #ede9fe;
+    border-color: #8b5cf6;
+    color: #5b21b6;
+    font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    .movie-filters-card {
+        position: static;
+    }
+}

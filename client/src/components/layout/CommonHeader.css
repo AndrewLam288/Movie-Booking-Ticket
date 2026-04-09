@@ -1,0 +1,103 @@
+.common-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #111827;
+    border-bottom: 1px solid #263041;
+    color: #f9fafb;
+}
+
+.top-banner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+}
+
+.brand-left {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+}
+
+.logo-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: #7c3aed;
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.brand-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.brand-subtitle {
+    margin: 0.1rem 0 0;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+}
+
+.theater-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: #cbd5e1;
+}
+
+.theater-picker select {
+    min-width: 210px;
+    padding: 0.65rem 0.8rem;
+    border-radius: 10px;
+    border: 1px solid #3b475d;
+    background: #0f172a;
+    color: white;
+}
+
+.main-nav {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.25rem 0.85rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #dbe4f0;
+    padding: 0.45rem 0.2rem;
+    border-bottom: 2px solid transparent;
+    font-weight: 500;
+}
+
+.nav-link.active {
+    color: white;
+    border-bottom-color: #8b5cf6;
+}
+
+@media (max-width: 768px) {
+    .top-banner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .theater-picker select {
+        min-width: 100%;
+    }
+}
