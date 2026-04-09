@@ -1,5 +1,6 @@
 package com.andrewlam.server.model;
 
+import com.andrewlam.server.enums.AgeRating;
 import com.andrewlam.server.enums.MovieStatus;
 import jakarta.persistence.*;
 
@@ -18,17 +19,30 @@ public class Movie extends BaseEntity {
     @Column(name = "duration_minutes", nullable = false)
     private Integer durationMinutes;
 
-    @Column(length = 20)
-    private String rating;
+    @Column(nullable = false, length = 100)
+    private String language;
+
+    @Column(length = 255)
+    private String director;
+
+    @Column(name = "cast_members")
+    private String castMembers;
 
     @Column(name = "poster_url", length = 500)
     private String posterUrl;
+
+    @Column(name = "banner_url", length = 500)
+    private String bannerUrl;
 
     @Column(name = "trailer_url", length = 500)
     private String trailerUrl;
 
     @Column(name = "release_date")
     private LocalDate releaseDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "age_rating", nullable = false, length = 50)
+    private AgeRating ageRating;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
@@ -58,12 +72,28 @@ public class Movie extends BaseEntity {
         this.durationMinutes = durationMinutes;
     }
 
-    public String getRating() {
-        return rating;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating;
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public String getCastMembers() {
+        return castMembers;
+    }
+
+    public void setCastMembers(String castMembers) {
+        this.castMembers = castMembers;
     }
 
     public String getPosterUrl() {
@@ -72,6 +102,14 @@ public class Movie extends BaseEntity {
 
     public void setPosterUrl(String posterUrl) {
         this.posterUrl = posterUrl;
+    }
+
+    public String getBannerUrl() {
+        return bannerUrl;
+    }
+
+    public void setBannerUrl(String bannerUrl) {
+        this.bannerUrl = bannerUrl;
     }
 
     public String getTrailerUrl() {
@@ -88,6 +126,14 @@ public class Movie extends BaseEntity {
 
     public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public AgeRating getAgeRating() {
+        return ageRating;
+    }
+
+    public void setAgeRating(AgeRating ageRating) {
+        this.ageRating = ageRating;
     }
 
     public MovieStatus getStatus() {
