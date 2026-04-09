@@ -1,6 +1,11 @@
 server:
   port: ${SERVER_PORT:8080}
 
+app:
+  cors:
+    allowed-origins:
+      - ${FRONTEND_URL:http://localhost:5173}
+
 spring:
   # Lên một cấp từ server, lấy file .env trong root và đọc như một file properties để lấy các biến môi trường.
   config:
@@ -8,6 +13,11 @@ spring:
 
   application:
     name: ${APP_NAME:movie-booking-server}
+
+  security:
+    user:
+      name: ${APP_SECURITY_USERNAME:user}
+      password: ${APP_SECURITY_PASSWORD:password}
 
   datasource:
     url: ${DB_URL}
@@ -31,4 +41,5 @@ logging:
   level:
     root: ${LOG_LEVEL_ROOT:INFO}
     org.flywaydb: INFO
+
 
