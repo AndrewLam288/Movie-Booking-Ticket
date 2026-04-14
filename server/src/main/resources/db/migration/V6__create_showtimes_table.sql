@@ -4,7 +4,6 @@ CREATE TABLE showtimes (
     room_id BIGINT NOT NULL,
     start_time TIMESTAMP NOT NULL,
     end_time TIMESTAMP NOT NULL,
-    language VARCHAR(50) NOT NULL DEFAULT 'ORIGINAL',
     format VARCHAR(50) NOT NULL DEFAULT 'TWO_D',
     base_price NUMERIC(10, 2) NOT NULL,
     status VARCHAR(50) NOT NULL DEFAULT 'SCHEDULED',

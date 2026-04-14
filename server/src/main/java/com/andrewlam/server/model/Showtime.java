@@ -25,9 +25,6 @@ public class Showtime extends BaseEntity {
     @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;
 
-    @Column(nullable = false, length = 50)
-    private String language = "ORIGINAL";
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
     private ShowtimeFormat format = ShowtimeFormat.TWO_D;
@@ -69,14 +66,6 @@ public class Showtime extends BaseEntity {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
     }
 
     public ShowtimeFormat getFormat() {
