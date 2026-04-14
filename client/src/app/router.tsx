@@ -2,13 +2,26 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import AppLayout from "../components/layout/AppLayout";
 import MoviesPage from "../features/movies/pages/MoviesPage";
 import MovieDetailPage from "../features/movies/pages/MovieDetailPage";
+import LoginPage from "../features/auth/pages/LoginPage";
+import RegisterPage from "../features/auth/pages/RegisterPage";
+import AccountPage from "../features/auth/pages/AccountPage";
+import ProtectedRoute from "../features/auth/components/ProtectedRoute";
+import { AuthProvider } from "../features/auth/context/AuthContext";
 import PlaceholderPage from "../pages/PlaceholderPage";
 import NotFoundPage from "../pages/NotFoundPage";
+
+function RootWithProviders() {
+    return (
+        <AuthProvider>
+            <AppLayout />
+        </AuthProvider>
+    );
+}
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <AppLayout />,
+        element: <RootWithProviders />,
         errorElement: <NotFoundPage />,
         children: [
             {
@@ -28,16 +41,25 @@ export const router = createBrowserRouter([
                 element: <PlaceholderPage title="Food & Drinks" />,
             },
             {
-                path: "my-bookings",
-                element: <PlaceholderPage title="My Bookings" />,
-            },
-            {
                 path: "cart",
                 element: <PlaceholderPage title="Cart" />,
             },
             {
                 path: "sign-in",
-                element: <PlaceholderPage title="Sign In" />,
+                element: <LoginPage />,
+            },
+            {
+                path: "register",
+                element: <RegisterPage />,
+            },
+            {
+                element: <ProtectedRoute />,
+                children: [
+                    {
+                        path: "account",
+                        element: <AccountPage />,
+                    },
+                ],
             },
             {
                 path: "buy-tickets/:movieId",

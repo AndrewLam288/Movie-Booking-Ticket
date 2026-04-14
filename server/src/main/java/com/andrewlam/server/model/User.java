@@ -24,7 +24,7 @@ public class User extends BaseEntity {
     private UserRole role = UserRole.CUSTOMER;
 
     @Column(name = "is_active", nullable = false)
-    private Boolean isActive = true;
+    private boolean active = true;
 
     public String getEmail() {
         return email;
@@ -64,11 +64,11 @@ public class User extends BaseEntity {
 
     public void setRole(UserRole role) { this.role = role; }
 
-    public Boolean getIsActive() {
-        return isActive;
+    public Boolean isActive() {
+        return active;
     }
 
     public void setIsActive(Boolean active) {
-        isActive = active;
+        this.active = active;
     }
 }
