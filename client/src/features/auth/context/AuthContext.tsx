@@ -5,10 +5,10 @@ import {
     useMemo,
     useState,
     type ReactNode,
-} from 'react';
-import { getCurrentUser } from '../api/authApi';
-import type { AuthResponse, CurrentUserResponse } from '../types/auth';
-import { authStorage } from '../utils/authStorage';
+} from "react";
+import { getCurrentUser } from "../api/authApi";
+import type { AuthResponse, CurrentUserResponse } from "../types/auth";
+import { authStorage } from "../utils/authStorage";
 
 type AuthContextValue = {
     user: CurrentUserResponse | null;
@@ -111,7 +111,7 @@ export function useAuth(): AuthContextValue {
     const context = useContext(AuthContext);
 
     if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider.');
+        throw new Error("useAuth must be used within an AuthProvider.");
     }
 
     return context;
