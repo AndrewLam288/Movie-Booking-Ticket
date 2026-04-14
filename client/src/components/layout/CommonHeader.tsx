@@ -1,15 +1,19 @@
 import { Link, NavLink } from "react-router-dom";
+import { useAuth } from "../../features/auth/context/AuthContext";
 import "./CommonHeader.css";
 
-const navItems = [
-    { label: "Movies", to: "/movies" },
-    { label: "Food & Drinks", to: "/food-drinks" },
-    { label: "My Bookings", to: "/my-bookings" },
-    { label: "Cart", to: "/cart" },
-    { label: "Sign In", to: "/sign-in" },
-];
-
 export default function CommonHeader() {
+    const { isAuthenticated } = useAuth();
+
+    const navItems = [
+        { label: "Movies", to: "/movies" },
+        { label: "Food & Drinks", to: "/food-drinks" },
+        { label: "Cart", to: "/cart" },
+        ...(isAuthenticated
+            ? [{ label: "My Account", to: "/account" }]
+            : [{ label: "Sign In", to: "/sign-in" }]),
+    ];
+
     return (
         <header className="common-header">
             <div className="top-banner">
