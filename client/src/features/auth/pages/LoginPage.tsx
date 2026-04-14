@@ -34,7 +34,16 @@ export default function LoginPage() {
             await completeLogin(response);
             navigate(redirectTo, { replace: true });
         } catch (error) {
-            setErrorMessage(getApiErrorMessage(error, "Login failed. Please try again."));
+            const message = getApiErrorMessage(error, "Login failed. Please try again.");
+
+            if (
+                message === "Request failed with status 401" ||
+                message.toLowerCase().includes("unauthorized")
+            ) {
+                setErrorMessage("Wrong email or password. Please try again.");
+            } else {
+                setErrorMessage(message);
+            }
         } finally {
             setIsSubmitting(false);
         }
