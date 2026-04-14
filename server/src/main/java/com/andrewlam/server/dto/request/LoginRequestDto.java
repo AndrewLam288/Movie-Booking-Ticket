@@ -12,5 +12,5 @@ public record LoginRequestDto(
 
         @NotBlank(message = "Password is required.")
         @Size(max = 255, message = "Password must not exceed 100 characters.")
-        String passwordHash
+        String password
 ) {}

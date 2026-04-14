@@ -12,7 +12,7 @@ public record RegisterRequestDto(
 
         @NotBlank(message = "Password is required.")
         @Size(min = 8, max = 255, message = "Password must be between 8 and 100 characters.")
-        String passwordHash,
+        String password,
 
         @NotBlank(message = "Full name is required.")
         @Size(max = 255, message = "Full name must not exceed 255 characters.")
