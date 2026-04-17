@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getShowtimeById } from "../api/showtimesApi";
 import type { ShowtimeDetail } from "../types/showtime";
+import SeatGrid from "../../seats/components/SeatGrid";
+import SeatLegend from "../../seats/components/SeatLegend";
+import { useSeatAvailability } from "../../seats/hooks/useSeatAvailability";
 import "./ShowtimeDetailPage.css";
 
 function formatDateTime(value: string): string {
@@ -45,6 +48,12 @@ export default function ShowtimeDetailPage() {
     const [showtime, setShowtime] = useState<ShowtimeDetail | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+
+    const {
+        seats,
+        loading: seatsLoading,
+        error: seatsError,
+    } = useSeatAvailability(parsedShowtimeId);
 
     useEffect(() => {
         let isMounted = true;
@@ -154,6 +163,22 @@ export default function ShowtimeDetailPage() {
                     <p>{buildLocation(showtime)}</p>
                     <p>Postal code: {showtime.cinemaPostalCode}</p>
                 </aside>
+            </div>
+
+            <div className="showtime-detail-page__seat-panel">
+                <div className="showtime-detail-page__seat-header">
+                    <h2>Seats Availability</h2>
+                </div>
+
+                <SeatLegend />
+
+                {seatsError ? (
+                    <p className="showtime-detail-page__error">{seatsError}</p>
+                ) : seatsLoading ? (
+                    <p>Loading seats...</p>
+                ) : (
+                    <SeatGrid seats={seats} />
+                )}
             </div>
 
             <div className="showtime-detail-page__footer">

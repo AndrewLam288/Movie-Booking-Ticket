@@ -14,14 +14,10 @@
 }
 
 .showtime-detail-page__header h1 {
-    margin: 0 0 1.2rem;
+    margin: 0;
     font-size: 1.9rem;
     color: #0f172a;
     text-align: center;
-}
-
-.showtime-detail-page__header p {
-    margin: 0;
 }
 
 .showtime-detail-page__section {
@@ -32,7 +28,8 @@
 }
 
 .showtime-detail-page__detail-panel,
-.showtime-detail-page__cinema-panel {
+.showtime-detail-page__cinema-panel,
+.showtime-detail-page__seat-panel {
     background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
     border: 1px solid #dbe4f0;
     border-radius: 24px;
@@ -83,6 +80,45 @@
     color: #475569;
 }
 
+.showtime-detail-page__seat-panel {
+    margin-top: 1.4rem;
+    padding: 1.5rem;
+}
+
+.showtime-detail-page__seat-header {
+    margin-bottom: 0.85rem;
+}
+
+.showtime-detail-page__seat-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #0f172a;
+}
+
+.showtime-detail-page__seat-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.4rem;
+}
+
+.showtime-detail-page__booking-button {
+    min-width: 170px;
+    padding: 0.95rem 1.2rem;
+    border: none;
+    border-radius: 14px;
+    background: #0f172a;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.98rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.showtime-detail-page__booking-button:hover {
+    background: #1e293b;
+    transform: translateY(-1px);
+}
+
 .showtime-detail-page__footer {
     display: flex;
     justify-content: flex-end;
@@ -127,11 +163,13 @@
         text-align: left;
     }
 
-    .showtime-detail-page__footer {
+    .showtime-detail-page__footer,
+    .showtime-detail-page__seat-footer {
         justify-content: stretch;
     }
 
-    .showtime-detail-page__back-link {
+    .showtime-detail-page__back-link,
+    .showtime-detail-page__booking-button {
         width: 100%;
     }
 }

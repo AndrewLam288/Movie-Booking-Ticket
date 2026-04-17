@@ -1,0 +1,52 @@
+.seat-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    margin: 1rem 0 1.25rem;
+}
+
+.seat-legend__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: #0f172a;
+}
+
+.seat-legend__swatch {
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+}
+
+.seat-legend__swatch--available {
+    background: #84cc16;
+    border-color: #84cc16;
+}
+
+.seat-legend__swatch--held {
+    background: #f59e0b;
+    border-color: #f59e0b;
+}
+
+.seat-legend__swatch--booked {
+    background: #dc2626;
+    border-color: #dc2626;
+}
+
+.seat-legend__swatch--unavailable {
+    background: #9ca3af;
+    border-color: #9ca3af;
+}
+
+.seat-legend__swatch--vip {
+    background: #ffffff;
+    border: 2px solid #8b5cf6;
+}
+
+.seat-legend__swatch--couple {
+    background: #ffffff;
+    border: 2px solid #ec4899;
+}
