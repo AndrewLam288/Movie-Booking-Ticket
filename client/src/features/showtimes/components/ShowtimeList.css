@@ -1,0 +1,119 @@
+.showtime-list {
+    display: grid;
+    gap: 1.35rem;
+}
+
+.showtime-list__empty {
+    margin: 0;
+    color: #64748b;
+    font-size: 1rem;
+}
+
+.showtime-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #dbe4f0;
+    border-radius: 24px;
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+    padding: 1.35rem;
+}
+
+.showtime-card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.showtime-card__title {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.showtime-card__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    background: #e11d48;
+    color: #ffffff;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.showtime-card__details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.showtime-card__detail-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 0.9rem 1rem;
+}
+
+.showtime-card__label {
+    color: #475569;
+    font-weight: 600;
+}
+
+.showtime-card__value {
+    color: #0f172a;
+    text-align: right;
+}
+
+.showtime-card__footer {
+    margin-top: 1.15rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.showtime-card__price {
+    margin: 0;
+    color: #0f172a;
+    font-size: 1rem;
+}
+
+.showtime-card__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    padding: 0.8rem 1rem;
+    border-radius: 14px;
+    background: #0f172a;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.showtime-card__button:hover {
+    background: #1e293b;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+    .showtime-card__top,
+    .showtime-card__detail-row,
+    .showtime-card__footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .showtime-card__value {
+        text-align: left;
+    }
+}

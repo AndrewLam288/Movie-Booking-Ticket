@@ -1,0 +1,80 @@
+.cinema-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #dbe4f0;
+    border-radius: 24px;
+    box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 280px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cinema-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 46px rgba(15, 23, 42, 0.12);
+}
+
+.cinema-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cinema-card__title {
+    margin: 0;
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: center;
+    padding-bottom: 0.9rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.cinema-card__info-box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 0.6rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.cinema-card__info-line {
+    margin: 0;
+    padding: 1rem 0.4rem;
+    color: #334155;
+    text-align: center;
+    font-size: 0.98rem;
+}
+
+.cinema-card__info-line + .cinema-card__info-line {
+    border-top: 1px solid #e2e8f0;
+}
+
+.cinema-card__footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.25rem;
+}
+
+.cinema-card__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 148px;
+    padding: 0.8rem 1rem;
+    border-radius: 14px;
+    background: #0f172a;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.cinema-card__button:hover {
+    background: #1e293b;
+    transform: translateY(-1px);
+}

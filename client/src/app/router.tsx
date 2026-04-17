@@ -7,6 +7,9 @@ import RegisterPage from "../features/auth/pages/RegisterPage";
 import AccountPage from "../features/auth/pages/AccountPage";
 import ProtectedRoute from "../features/auth/components/ProtectedRoute";
 import { AuthProvider } from "../features/auth/context/AuthContext";
+import CinemasPage from "../features/cinemas/pages/CinemasPage";
+import CinemaDetailPage from "../features/cinemas/pages/CinemaDetailPage";
+import ShowtimeDetailPage from "../features/showtimes/pages/ShowtimeDetailPage";
 import PlaceholderPage from "../pages/PlaceholderPage";
 import NotFoundPage from "../pages/NotFoundPage";
 
@@ -35,6 +38,18 @@ export const router = createBrowserRouter([
             {
                 path: "movies/:movieId",
                 element: <MovieDetailPage />,
+            },
+            {
+                path: "cinemas",
+                element: <CinemasPage />,
+            },
+            {
+                path: "cinemas/:cinemaId",
+                element: <CinemaDetailPage />,
+            },
+            {
+                path: "showtimes/:showtimeId",
+                element: <ShowtimeDetailPage />,
             },
             {
                 path: "food-drinks",

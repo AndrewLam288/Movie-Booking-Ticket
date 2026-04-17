@@ -1,0 +1,32 @@
+.cinema-detail-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3rem;
+}
+
+.cinema-detail-page__header {
+    margin-bottom: 1.75rem;
+}
+
+.cinema-detail-page__header h1 {
+    margin: 0 0 0.45rem;
+    font-size: 2rem;
+    color: #0f172a;
+}
+
+.cinema-detail-page__header p {
+    margin: 0.35rem 0;
+    color: #475569;
+    font-size: 1rem;
+}
+
+.cinema-detail-page__section h2 {
+    margin: 0 0 1rem;
+    font-size: 1.45rem;
+    color: #0f172a;
+}
+
+.cinema-detail-page__error {
+    color: #b91c1c;
+    font-weight: 600;
+}
