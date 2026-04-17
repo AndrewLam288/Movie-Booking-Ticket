@@ -1,5 +1,6 @@
 package com.andrewlam.server.service.impl;
 
+import com.andrewlam.server.common.exception.ResourceNotFoundException;
 import com.andrewlam.server.dto.response.ShowtimeDetailResponseDto;
 import com.andrewlam.server.dto.response.ShowtimeSummaryResponseDto;
 import com.andrewlam.server.mapper.ShowtimeMapper;
@@ -8,7 +9,6 @@ import com.andrewlam.server.model.Showtime;
 import com.andrewlam.server.repository.CinemaRepository;
 import com.andrewlam.server.repository.ShowtimeRepository;
 import com.andrewlam.server.service.ShowtimeService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +35,7 @@ public class ShowtimeServiceImpl implements ShowtimeService {
     @Override
     public List<ShowtimeSummaryResponseDto> getShowtimesByCinemaId(Long cinemaId) {
         Cinema cinema = cinemaRepository.findByIdAndIsActiveTrue(cinemaId)
-                .orElseThrow(() -> new EntityNotFoundException("Cinema not found with id: " + cinemaId));
+                .orElseThrow(() -> new ResourceNotFoundException("Cinema not found with id: " + cinemaId));
 
         return showtimeRepository.findAllByRoomCinemaIdOrderByStartTimeAsc(cinema.getId())
                 .stream()
@@ -46,7 +46,7 @@ public class ShowtimeServiceImpl implements ShowtimeService {
     @Override
     public ShowtimeDetailResponseDto getShowtimeById(Long showtimeId) {
         Showtime showtime = showtimeRepository.findById(showtimeId)
-                .orElseThrow(() -> new EntityNotFoundException("Showtime not found with id: " + showtimeId));
+                .orElseThrow(() -> new ResourceNotFoundException("Showtime not found with id: " + showtimeId));
 
         return showtimeMapper.toDetailResponseDto(showtime);
     }

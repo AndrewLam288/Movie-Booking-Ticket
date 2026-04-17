@@ -4,7 +4,12 @@ import com.andrewlam.server.enums.SeatType;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "seats")
+@Table(
+        name = "seats",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_seat_room_row_number", columnNames = {"room_id", "seat_row", "seat_number"})
+        }
+)
 public class Seat extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -1,12 +1,12 @@
 package com.andrewlam.server.service.impl;
 
+import com.andrewlam.server.common.exception.ResourceNotFoundException;
 import com.andrewlam.server.dto.response.CinemaDetailResponseDto;
 import com.andrewlam.server.dto.response.CinemaSummaryResponseDto;
 import com.andrewlam.server.mapper.CinemaMapper;
 import com.andrewlam.server.model.Cinema;
 import com.andrewlam.server.repository.CinemaRepository;
 import com.andrewlam.server.service.CinemaService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +35,7 @@ public class CinemaServiceImpl implements CinemaService {
     @Override
     public CinemaDetailResponseDto getCinemaById(Long cinemaId) {
         Cinema cinema = cinemaRepository.findByIdAndIsActiveTrue(cinemaId)
-                .orElseThrow(() -> new EntityNotFoundException("Cinema not found with id: " + cinemaId));
+                .orElseThrow(() -> new ResourceNotFoundException("Cinema not found with id: " + cinemaId));
 
         return cinemaMapper.toDetailResponseDto(cinema);
     }
