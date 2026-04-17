@@ -54,6 +54,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/movies/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/cinemas/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/showtimes/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/showtimes/*/seats").permitAll()
+                        .requestMatchers("/ws", "/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
