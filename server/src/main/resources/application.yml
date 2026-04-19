@@ -2,6 +2,10 @@ server:
   port: ${SERVER_PORT:8080}
 
 app:
+  seat-hold:
+    duration-minutes: ${SEAT_HOLD_DURATION_MINUTES:10}
+    cleanup-fixed-delay-ms: ${SEAT_HOLD_CLEANUP_FIXED_DELAY_MS:30000}
+
   cors:
     allowed-origins:
       - ${FRONTEND_URL:http://localhost:5173}

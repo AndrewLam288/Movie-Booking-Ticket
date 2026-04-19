@@ -11,6 +11,7 @@ import com.andrewlam.server.model.Room;
 import com.andrewlam.server.model.Seat;
 import com.andrewlam.server.model.SeatHold;
 import com.andrewlam.server.model.Showtime;
+import com.andrewlam.server.repository.BookingSeatRepository;
 import com.andrewlam.server.repository.SeatHoldRepository;
 import com.andrewlam.server.repository.SeatRepository;
 import com.andrewlam.server.repository.ShowtimeRepository;
@@ -22,10 +23,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SeatServiceImpl implements SeatService {
@@ -33,20 +32,23 @@ public class SeatServiceImpl implements SeatService {
     private final SeatRepository seatRepository;
     private final SeatHoldRepository seatHoldRepository;
     private final ShowtimeRepository showtimeRepository;
+    private final BookingSeatRepository bookingSeatRepository;
     private final SimpMessagingTemplate messagingTemplate;
 
-    @Value("${app.seat-hold.duration-minutes:5}")
+    @Value("${app.seat-hold.duration-minutes}")
     private long seatHoldDurationMinutes;
 
     public SeatServiceImpl(
             SeatRepository seatRepository,
             SeatHoldRepository seatHoldRepository,
             ShowtimeRepository showtimeRepository,
+            BookingSeatRepository bookingSeatRepository,
             SimpMessagingTemplate messagingTemplate
     ) {
         this.seatRepository = seatRepository;
         this.seatHoldRepository = seatHoldRepository;
         this.showtimeRepository = showtimeRepository;
+        this.bookingSeatRepository = bookingSeatRepository;
         this.messagingTemplate = messagingTemplate;
     }
 
@@ -72,8 +74,14 @@ public class SeatServiceImpl implements SeatService {
             holdBySeatId.put(hold.getSeat().getId(), hold);
         }
 
+        Set<Long> bookedSeatIds = new HashSet<>(bookingSeatRepository.findBookedSeatIdsByShowtimeId(showtimeId));
+
         List<SeatItemResponseDto> seatItems = seats.stream()
-                .map(seat -> mapToSeatItemResponseDto(seat, holdBySeatId.get(seat.getId())))
+                .map(seat -> mapToSeatItemResponseDto(
+                        seat,
+                        holdBySeatId.get(seat.getId()),
+                        bookedSeatIds.contains(seat.getId())
+                ))
                 .toList();
 
         SeatMapResponseDto response = new SeatMapResponseDto();
@@ -87,7 +95,7 @@ public class SeatServiceImpl implements SeatService {
 
     @Override
     @Transactional
-    public void holdSeat(Long showtimeId, Long seatId, String clientSessionId) {
+    public void holdSeat(Long showtimeId, Long seatId, String holderKey) {
         Showtime showtime = showtimeRepository.findById(showtimeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Showtime not found with id: " + showtimeId));
 
@@ -100,6 +108,10 @@ public class SeatServiceImpl implements SeatService {
             throw new BadRequestException("Seat is inactive and cannot be selected");
         }
 
+        if (bookingSeatRepository.existsBookedSeat(showtimeId, seatId)) {
+            throw new ConflictException("Seat is already booked");
+        }
+
         OffsetDateTime now = OffsetDateTime.now();
 
         Optional<SeatHold> existingHoldOptional = seatHoldRepository.findByShowtimeIdAndSeatId(showtimeId, seatId);
@@ -108,40 +120,44 @@ public class SeatServiceImpl implements SeatService {
             SeatHold existingHold = existingHoldOptional.get();
 
             if (existingHold.getExpiresAt().isAfter(now)
-                    && !existingHold.getClientSessionId().equals(clientSessionId)) {
-                throw new ConflictException("Seat is already held by another session");
+                    && !existingHold.getClientSessionId().equals(holderKey)) {
+                throw new ConflictException("Seat is already held by another user");
+            }
+
+            if (!existingHold.getExpiresAt().isAfter(now)) {
+                seatHoldRepository.delete(existingHold);
             }
         }
 
         SeatHold hold = seatHoldRepository
-                .findByShowtimeIdAndSeatIdAndClientSessionId(showtimeId, seatId, clientSessionId)
+                .findByShowtimeIdAndSeatIdAndClientSessionId(showtimeId, seatId, holderKey)
                 .orElseGet(SeatHold::new);
 
         hold.setShowtime(showtime);
         hold.setSeat(seat);
-        hold.setClientSessionId(clientSessionId);
+        hold.setClientSessionId(holderKey);
         hold.setExpiresAt(now.plusMinutes(seatHoldDurationMinutes));
 
         seatHoldRepository.save(hold);
 
-        publishSeatAvailabilityEvent(showtimeId, seatId, SeatAvailabilityStatus.HELD, clientSessionId);
+        publishSeatAvailabilityEvent(showtimeId, seatId, SeatAvailabilityStatus.HELD, holderKey);
     }
 
     @Override
     @Transactional
-    public void releaseSeat(Long showtimeId, Long seatId, String clientSessionId) {
+    public void releaseSeat(Long showtimeId, Long seatId, String holderKey) {
         SeatHold hold = seatHoldRepository
-                .findByShowtimeIdAndSeatIdAndClientSessionId(showtimeId, seatId, clientSessionId)
-                .orElseThrow(() -> new ResourceNotFoundException("No active hold found for this seat and session"));
+                .findByShowtimeIdAndSeatIdAndClientSessionId(showtimeId, seatId, holderKey)
+                .orElseThrow(() -> new ResourceNotFoundException("No active hold found for this seat and user"));
 
         seatHoldRepository.delete(hold);
 
-        publishSeatAvailabilityEvent(showtimeId, seatId, SeatAvailabilityStatus.AVAILABLE, clientSessionId);
+        publishSeatAvailabilityEvent(showtimeId, seatId, SeatAvailabilityStatus.AVAILABLE, holderKey);
     }
 
     @Override
     @Transactional
-    @Scheduled(fixedDelayString = "${app.seat-hold.cleanup-fixed-delay-ms:30000}")
+    @Scheduled(fixedDelayString = "${app.seat-hold.cleanup-fixed-delay-ms}")
     public void cleanupExpiredSeatHolds() {
         OffsetDateTime now = OffsetDateTime.now();
 
@@ -150,7 +166,6 @@ public class SeatServiceImpl implements SeatService {
         for (SeatHold expiredHold : expiredHolds) {
             Long showtimeId = expiredHold.getShowtime().getId();
             Long seatId = expiredHold.getSeat().getId();
-            String clientSessionId = expiredHold.getClientSessionId();
 
             seatHoldRepository.delete(expiredHold);
 
@@ -158,8 +173,51 @@ public class SeatServiceImpl implements SeatService {
                     showtimeId,
                     seatId,
                     SeatAvailabilityStatus.AVAILABLE,
-                    clientSessionId
+                    null
             );
+        }
+    }
+
+    @Override
+    @Transactional
+    public Set<Long> getValidHeldSeatIds(Long showtimeId, Collection<Long> seatIds, String holderKey) {
+        if (seatIds == null || seatIds.isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        OffsetDateTime now = OffsetDateTime.now();
+
+        return seatHoldRepository.findByShowtimeIdAndSeatIdIn(showtimeId, seatIds)
+                .stream()
+                .filter(hold -> hold.getExpiresAt().isAfter(now))
+                .filter(hold -> holderKey.equals(hold.getClientSessionId()))
+                .map(hold -> hold.getSeat().getId())
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    @Transactional
+    public void consumeHeldSeatsAfterBooking(Long showtimeId, Collection<Long> seatIds, String holderKey) {
+        if (seatIds == null || seatIds.isEmpty()) {
+            return;
+        }
+
+        List<SeatHold> holds = seatHoldRepository
+                .findByShowtimeIdAndSeatIdInAndClientSessionId(showtimeId, seatIds, holderKey);
+
+        if (!holds.isEmpty()) {
+            seatHoldRepository.deleteAll(holds);
+        }
+    }
+
+    @Override
+    public void publishBookedSeats(Long showtimeId, Collection<Long> seatIds) {
+        if (seatIds == null || seatIds.isEmpty()) {
+            return;
+        }
+
+        for (Long seatId : seatIds) {
+            publishSeatAvailabilityEvent(showtimeId, seatId, SeatAvailabilityStatus.BOOKED, null);
         }
     }
 
@@ -169,7 +227,7 @@ public class SeatServiceImpl implements SeatService {
         }
     }
 
-    private SeatItemResponseDto mapToSeatItemResponseDto(Seat seat, SeatHold hold) {
+    private SeatItemResponseDto mapToSeatItemResponseDto(Seat seat, SeatHold hold, boolean booked) {
         SeatItemResponseDto response = new SeatItemResponseDto();
         response.setSeatId(seat.getId());
         response.setSeatRow(seat.getSeatRow());
@@ -179,6 +237,12 @@ public class SeatServiceImpl implements SeatService {
 
         if (Boolean.FALSE.equals(seat.getIsActive())) {
             response.setStatus(SeatAvailabilityStatus.UNAVAILABLE);
+            response.setHeldBySessionId(null);
+            return response;
+        }
+
+        if (booked) {
+            response.setStatus(SeatAvailabilityStatus.BOOKED);
             response.setHeldBySessionId(null);
             return response;
         }
@@ -198,13 +262,13 @@ public class SeatServiceImpl implements SeatService {
             Long showtimeId,
             Long seatId,
             SeatAvailabilityStatus status,
-            String clientSessionId
+            String holderKey
     ) {
         SeatAvailabilityEventDto event = new SeatAvailabilityEventDto();
         event.setShowtimeId(showtimeId);
         event.setSeatId(seatId);
         event.setStatus(status);
-        event.setClientSessionId(clientSessionId);
+        event.setClientSessionId(holderKey);
 
         messagingTemplate.convertAndSend(
                 "/topic/showtimes/" + showtimeId + "/seats",

@@ -4,6 +4,7 @@ import com.andrewlam.server.model.SeatHold;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.OffsetDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,4 +17,12 @@ public interface SeatHoldRepository extends JpaRepository<SeatHold, Long> {
     Optional<SeatHold> findByShowtimeIdAndSeatIdAndClientSessionId(Long showtimeId, Long seatId, String clientSessionId);
 
     List<SeatHold> findByExpiresAtBefore(OffsetDateTime now);
+
+    List<SeatHold> findByShowtimeIdAndSeatIdIn(Long showtimeId, Collection<Long> seatIds);
+
+    List<SeatHold> findByShowtimeIdAndSeatIdInAndClientSessionId(
+            Long showtimeId,
+            Collection<Long> seatIds,
+            String clientSessionId
+    );
 }
