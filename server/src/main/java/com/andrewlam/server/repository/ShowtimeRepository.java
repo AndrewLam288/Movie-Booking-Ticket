@@ -12,6 +12,9 @@ public interface ShowtimeRepository extends JpaRepository<Showtime, Long> {
     @EntityGraph(attributePaths = {"movie", "room", "room.cinema"})
     List<Showtime> findAllByRoomCinemaIdOrderByStartTimeAsc(Long cinemaId);
 
+    @EntityGraph(attributePaths = {"movie", "room", "room.cinema"})
+    List<Showtime> findAllByMovieIdOrderByStartTimeAsc(Long movieId);
+
     @Override
     @EntityGraph(attributePaths = {"movie", "room", "room.cinema"})
     Optional<Showtime> findById(Long id);

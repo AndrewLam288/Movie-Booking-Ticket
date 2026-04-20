@@ -44,6 +44,14 @@ public class ShowtimeServiceImpl implements ShowtimeService {
     }
 
     @Override
+    public List<ShowtimeSummaryResponseDto> getShowtimesByMovieId(Long movieId) {
+        return showtimeRepository.findAllByMovieIdOrderByStartTimeAsc(movieId)
+                .stream()
+                .map(showtimeMapper::toSummaryResponseDto)
+                .toList();
+    }
+
+    @Override
     public ShowtimeDetailResponseDto getShowtimeById(Long showtimeId) {
         Showtime showtime = showtimeRepository.findById(showtimeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Showtime not found with id: " + showtimeId));

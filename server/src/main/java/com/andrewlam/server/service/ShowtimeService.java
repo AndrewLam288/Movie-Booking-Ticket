@@ -9,5 +9,7 @@ public interface ShowtimeService {
 
     List<ShowtimeSummaryResponseDto> getShowtimesByCinemaId(Long cinemaId);
 
+    List<ShowtimeSummaryResponseDto> getShowtimesByMovieId(Long movieId);
+
     ShowtimeDetailResponseDto getShowtimeById(Long showtimeId);
 }
