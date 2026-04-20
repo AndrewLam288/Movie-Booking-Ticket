@@ -12,6 +12,7 @@ import CinemaDetailPage from "../features/cinemas/pages/CinemaDetailPage";
 import ShowtimeDetailPage from "../features/showtimes/pages/ShowtimeDetailPage";
 import PlaceholderPage from "../pages/PlaceholderPage";
 import NotFoundPage from "../pages/NotFoundPage";
+import SeatBookingPage from "../features/seats/pages/SeatBookingPage";
 
 function RootWithProviders() {
     return (
@@ -74,11 +75,11 @@ export const router = createBrowserRouter([
                         path: "account",
                         element: <AccountPage />,
                     },
+                    {
+                        path: "buy-tickets/:movieId",
+                        element: <SeatBookingPage />,
+                    },
                 ],
-            },
-            {
-                path: "buy-tickets/:movieId",
-                element: <PlaceholderPage title="Buy Tickets" />,
             },
             {
                 path: "*",

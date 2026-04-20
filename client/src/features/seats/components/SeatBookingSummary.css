@@ -1,0 +1,92 @@
+.seat-booking-summary {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 1.25rem;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    position: sticky;
+    top: 1.5rem;
+}
+
+.seat-booking-summary__title {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #111827;
+}
+
+.seat-booking-summary__room {
+    margin: 0.5rem 0 0;
+    color: #6b7280;
+}
+
+.seat-booking-summary__section {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.seat-booking-summary__label {
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.75rem;
+}
+
+.seat-booking-summary__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.seat-booking-summary__chip {
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    background: #f3f4f6;
+    font-weight: 700;
+    color: #111827;
+}
+
+.seat-booking-summary__empty {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+.seat-booking-summary__actions {
+    margin-top: 1.25rem;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.seat-booking-summary__button {
+    border: none;
+    border-radius: 14px;
+    padding: 0.9rem 1rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.seat-booking-summary__button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.seat-booking-summary__button--primary {
+    background: #7c3aed;
+    color: #ffffff;
+}
+
+.seat-booking-summary__button--secondary {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.seat-booking-summary__success {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.25rem;
+    padding: 0.9rem 1rem;
+    border-radius: 14px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+}

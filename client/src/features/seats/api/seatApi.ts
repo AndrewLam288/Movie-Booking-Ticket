@@ -1,9 +1,11 @@
-import { apiGet, apiPost } from '../../../shared/lib/apiClient';
+import { apiDelete, apiGet, apiPost } from "../../../shared/lib/apiClient";
 import type {
+    BookingResponseDto,
+    CreateBookingRequestDto,
     HoldSeatRequestDto,
     ReleaseSeatRequestDto,
     SeatMapResponse,
-} from '../types/seat';
+} from "../types/seat";
 
 export async function getSeatMap(showtimeId: number): Promise<SeatMapResponse> {
     return apiGet<SeatMapResponse>(`/showtimes/${showtimeId}/seats`);
@@ -11,20 +13,32 @@ export async function getSeatMap(showtimeId: number): Promise<SeatMapResponse> {
 
 export async function holdSeat(
     showtimeId: number,
-    payload: HoldSeatRequestDto,
+    seatOrPayload: number | HoldSeatRequestDto
 ): Promise<void> {
-    await apiPost<HoldSeatRequestDto, void>(
-        `/showtimes/${showtimeId}/seats/hold`,
-        payload,
+    const seatId =
+        typeof seatOrPayload === "number" ? seatOrPayload : seatOrPayload.seatId;
+
+    await apiPost<undefined, void>(
+        `/showtimes/${showtimeId}/seats/${seatId}/hold`,
+        undefined
     );
 }
 
 export async function releaseSeat(
     showtimeId: number,
-    payload: ReleaseSeatRequestDto,
+    seatOrPayload: number | ReleaseSeatRequestDto
 ): Promise<void> {
-    await apiPost<ReleaseSeatRequestDto, void>(
-        `/showtimes/${showtimeId}/seats/release`,
-        payload,
+    const seatId =
+        typeof seatOrPayload === "number" ? seatOrPayload : seatOrPayload.seatId;
+
+    await apiDelete<void>(`/showtimes/${showtimeId}/seats/${seatId}/hold`);
+}
+
+export async function createBooking(
+    payload: CreateBookingRequestDto
+): Promise<BookingResponseDto> {
+    return apiPost<CreateBookingRequestDto, BookingResponseDto>(
+        "/bookings",
+        payload
     );
 }

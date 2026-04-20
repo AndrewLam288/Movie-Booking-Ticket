@@ -3,6 +3,9 @@ import "./SeatGrid.css";
 
 interface SeatGridProps {
     seats: SeatItem[];
+    selectedSeatIds?: number[];
+    pendingSeatIds?: number[];
+    onSeatClick?: (seat: SeatItem) => void;
 }
 
 function groupSeatsByRow(seats: SeatItem[]): Map<string, SeatItem[]> {
@@ -21,7 +24,12 @@ function groupSeatsByRow(seats: SeatItem[]): Map<string, SeatItem[]> {
     return new Map([...grouped.entries()].sort(([a], [b]) => a.localeCompare(b)));
 }
 
-function buildSeatClassName(seat: SeatItem): string {
+function buildSeatClassName(
+    seat: SeatItem,
+    isSelected: boolean,
+    isPending: boolean,
+    isClickable: boolean
+): string {
     const classNames = ["seat-grid__seat"];
 
     if (seat.status === "HELD") {
@@ -42,10 +50,27 @@ function buildSeatClassName(seat: SeatItem): string {
         classNames.push("seat-grid__seat--couple");
     }
 
+    if (isSelected) {
+        classNames.push("seat-grid__seat--selected");
+    }
+
+    if (isPending) {
+        classNames.push("seat-grid__seat--pending");
+    }
+
+    if (isClickable) {
+        classNames.push("seat-grid__seat--clickable");
+    }
+
     return classNames.join(" ");
 }
 
-export default function SeatGrid({ seats }: SeatGridProps) {
+export default function SeatGrid({
+                                     seats,
+                                     selectedSeatIds = [],
+                                     pendingSeatIds = [],
+                                     onSeatClick,
+                                 }: SeatGridProps) {
     const groupedSeats = groupSeatsByRow(seats);
     const rows = [...groupedSeats.entries()];
 
@@ -71,18 +96,37 @@ export default function SeatGrid({ seats }: SeatGridProps) {
                         {rows.map(([rowLabel, rowSeats]) => (
                             <div key={rowLabel} className="seat-grid__row">
                                 <div className="seat-grid__row-seats">
-                                    {rowSeats.map((seat) => (
-                                        <button
-                                            key={seat.seatId}
-                                            type="button"
-                                            className={buildSeatClassName(seat)}
-                                            disabled
-                                            title={`${seat.seatRow}${seat.seatNumber} - ${seat.seatType}`}
-                                        >
-                                            {seat.seatRow}
-                                            {seat.seatNumber}
-                                        </button>
-                                    ))}
+                                    {rowSeats.map((seat) => {
+                                        const isSelected = selectedSeatIds.includes(seat.seatId);
+                                        const isPending = pendingSeatIds.includes(seat.seatId);
+                                        const isClickable = typeof onSeatClick === "function";
+
+                                        const isDisabled =
+                                            !isClickable ||
+                                            isPending ||
+                                            seat.status === "BOOKED" ||
+                                            seat.status === "UNAVAILABLE" ||
+                                            (seat.status === "HELD" && !isSelected);
+
+                                        return (
+                                            <button
+                                                key={seat.seatId}
+                                                type="button"
+                                                className={buildSeatClassName(
+                                                    seat,
+                                                    isSelected,
+                                                    isPending,
+                                                    isClickable
+                                                )}
+                                                disabled={isDisabled}
+                                                title={`${seat.seatRow}${seat.seatNumber} - ${seat.seatType}`}
+                                                onClick={() => onSeatClick?.(seat)}
+                                            >
+                                                {seat.seatRow}
+                                                {seat.seatNumber}
+                                            </button>
+                                        );
+                                    })}
                                 </div>
                             </div>
                         ))}

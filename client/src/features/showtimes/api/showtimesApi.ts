@@ -41,3 +41,14 @@ export async function getShowtimeById(showtimeId: number): Promise<ShowtimeDetai
 
     return handleResponse<ShowtimeDetail>(response);
 }
+
+export async function getShowtimesByMovieId(movieId: number): Promise<ShowtimeSummary[]> {
+    const response = await fetch(`${API_BASE_URL}/movies/${movieId}/showtimes`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+        },
+    });
+
+    return handleResponse<ShowtimeSummary[]>(response);
+}

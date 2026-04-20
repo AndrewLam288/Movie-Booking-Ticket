@@ -1,10 +1,10 @@
-export type SeatType = 'STANDARD' | 'VIP' | 'COUPLE';
+export type SeatType = "STANDARD" | "VIP" | "COUPLE";
 
 export type SeatAvailabilityStatus =
-    | 'AVAILABLE'
-    | 'HELD'
-    | 'BOOKED'
-    | 'UNAVAILABLE';
+    | "AVAILABLE"
+    | "HELD"
+    | "BOOKED"
+    | "UNAVAILABLE";
 
 export interface SeatItem {
     seatId: number;
@@ -38,4 +38,31 @@ export interface SeatAvailabilityEventDto {
     seatId: number;
     status: SeatAvailabilityStatus;
     clientSessionId: string | null;
+}
+
+export interface CreateBookingRequestDto {
+    showtimeId: number;
+    seatIds: number[];
+}
+
+export interface BookingSeatResponseDto {
+    seatId: number;
+    seatLabel: string;
+    price: number;
+}
+
+export interface BookingResponseDto {
+    bookingId: number;
+    bookingCode: string;
+    showtimeId: number;
+    status: "CONFIRMED" | "CANCELLED" | "EXPIRED";
+    totalAmount: number;
+    bookedAt: string;
+    seats: BookingSeatResponseDto[];
+}
+
+export interface SeatBookingLocationState {
+    movieTitle?: string;
+    cinemaName?: string;
+    showtimeLabel?: string;
 }
