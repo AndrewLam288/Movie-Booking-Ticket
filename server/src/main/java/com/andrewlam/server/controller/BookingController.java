@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/bookings")
 public class BookingController {
@@ -35,5 +37,11 @@ public class BookingController {
     ) {
         BookingResponseDto responseDto = bookingService.getMyBooking(bookingCode, authentication.getName());
         return ResponseEntity.ok(responseDto);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<List<BookingResponseDto>> getMyBookings(Authentication authentication) {
+        List<BookingResponseDto> response = bookingService.getMyBookings(authentication.getName());
+        return ResponseEntity.ok(response);
     }
 }

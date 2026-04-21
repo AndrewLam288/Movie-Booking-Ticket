@@ -21,9 +21,9 @@ import com.andrewlam.server.service.BookingService;
 import com.andrewlam.server.service.SeatService;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -136,6 +136,17 @@ public class BookingServiceImpl implements BookingService {
 
         booking.getBookingSeats().size();
         return bookingMapper.toResponseDto(booking);
+    }
+
+    @Override
+    @Transactional
+    public List<BookingResponseDto> getMyBookings(String principalName) {
+        User user = resolveAuthenticatedUser(principalName);
+
+        return bookingRepository.findAllByUserIdOrderByBookedAtDesc(user.getId())
+                .stream()
+                .map(bookingMapper::toResponseDto)
+                .toList();
     }
 
     private User resolveAuthenticatedUser(String principalName) {

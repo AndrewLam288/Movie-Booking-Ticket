@@ -1,9 +1,11 @@
 package com.andrewlam.server.repository;
 
 import com.andrewlam.server.model.Booking;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
@@ -15,4 +17,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
           and b.user.id = :userId
     """)
     Optional<Booking> findMyBookingByCode(String bookingCode, Long userId);
+
+    @EntityGraph(attributePaths = {"showtime", "bookingSeats", "bookingSeats.seat"})
+    List<Booking> findAllByUserIdOrderByBookedAtDesc(Long userId);
 }
