@@ -48,3 +48,7 @@ export async function getBookingByCode(
 ): Promise<BookingResponseDto> {
     return apiGet<BookingResponseDto>(`/bookings/${bookingCode}`);
 }
+
+export async function getMyBookings(): Promise<BookingResponseDto[]> {
+    return apiGet<BookingResponseDto[]>("/bookings/me");
+}

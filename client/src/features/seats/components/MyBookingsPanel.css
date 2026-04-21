@@ -1,0 +1,121 @@
+.my-bookings-panel {
+    display: grid;
+    gap: 1rem;
+}
+
+.my-bookings-panel__box {
+    min-height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed #cbd5e1;
+    border-radius: 20px;
+    color: #6b7280;
+    background: #ffffff;
+}
+
+.my-bookings-panel__box--error {
+    color: #991b1b;
+    border-color: #fecaca;
+    background: #fef2f2;
+}
+
+.my-bookings-panel__card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 1.25rem;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+}
+
+.my-bookings-panel__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.my-bookings-panel__eyebrow {
+    margin: 0 0 0.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    color: #7c3aed;
+    font-size: 0.8rem;
+}
+
+.my-bookings-panel__title {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #111827;
+}
+
+.my-bookings-panel__status {
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: #f3f4f6;
+    font-weight: 700;
+    color: #374151;
+}
+
+.my-bookings-panel__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 1.25rem;
+}
+
+.my-bookings-panel__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.my-bookings-panel__section {
+    margin-top: 1rem;
+}
+
+.my-bookings-panel__label {
+    display: inline-block;
+    margin-bottom: 0.6rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.my-bookings-panel__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.my-bookings-panel__chip {
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    background: #f3f4f6;
+    font-weight: 700;
+    color: #111827;
+}
+
+.my-bookings-panel__actions {
+    margin-top: 1rem;
+}
+
+.my-bookings-panel__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: 14px;
+    padding: 0.8rem 1rem;
+    font-weight: 700;
+    background: #7c3aed;
+    color: #ffffff;
+}
+
+@media (max-width: 720px) {
+    .my-bookings-panel__grid {
+        grid-template-columns: 1fr;
+    }
+}

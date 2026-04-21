@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import MyBookingsPanel from "../../seats/components/MyBookingsPanel";
 import "./AccountPage.css";
 
 type AccountTab = "profile" | "bookings";
@@ -93,13 +94,11 @@ export default function AccountPage() {
                             <div className="account-panel__header">
                                 <h1 className="account-panel__title">My Bookings</h1>
                                 <p className="account-panel__subtitle">
-                                    Booking history will appear here once the booking flow is built.
+                                    View your booking history and receipt details here.
                                 </p>
                             </div>
 
-                            <div className="account-empty-state">
-                                <p>No booking data is available yet.</p>
-                            </div>
+                            <MyBookingsPanel />
                         </>
                     )}
                 </div>
