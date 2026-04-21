@@ -5,6 +5,7 @@ interface SeatBookingSummaryProps {
     selectedLabels: string[];
     bookingCode?: string;
     bookingLoading: boolean;
+    primaryButtonLabel?: string;
     onConfirm: () => void;
     onClear: () => void;
 }
@@ -14,6 +15,7 @@ export default function SeatBookingSummary({
                                                selectedLabels,
                                                bookingCode,
                                                bookingLoading,
+                                               primaryButtonLabel = "Confirm Booking",
                                                onConfirm,
                                                onClear,
                                            }: SeatBookingSummaryProps) {
@@ -41,13 +43,13 @@ export default function SeatBookingSummary({
                     <div className="seat-booking-summary__chips">
                         {selectedLabels.map((label) => (
                             <span key={label} className="seat-booking-summary__chip">
-                {label}
-              </span>
+                                {label}
+                            </span>
                         ))}
                     </div>
                 ) : (
                     <p className="seat-booking-summary__empty">
-                        Select available seats to continue booking.
+                        Select available seats to continue.
                     </p>
                 )}
             </div>
@@ -59,7 +61,7 @@ export default function SeatBookingSummary({
                     disabled={!hasSelection || bookingLoading}
                     onClick={onConfirm}
                 >
-                    {bookingLoading ? "Confirming..." : "Confirm Booking"}
+                    {bookingLoading ? "Processing..." : primaryButtonLabel}
                 </button>
 
                 <button

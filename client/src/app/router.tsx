@@ -13,6 +13,8 @@ import ShowtimeDetailPage from "../features/showtimes/pages/ShowtimeDetailPage";
 import PlaceholderPage from "../pages/PlaceholderPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import SeatBookingPage from "../features/seats/pages/SeatBookingPage";
+import CheckoutPage from "../features/seats/pages/CheckoutPage";
+import BookingConfirmedPage from "../features/seats/pages/BookingConfirmedPage";
 
 function RootWithProviders() {
     return (
@@ -78,6 +80,14 @@ export const router = createBrowserRouter([
                     {
                         path: "buy-tickets/:movieId",
                         element: <SeatBookingPage />,
+                    },
+                    {
+                        path: "checkout/showtimes/:showtimeId",
+                        element: <CheckoutPage />,
+                    },
+                    {
+                        path: "booking-confirmed/:bookingCode",
+                        element: <BookingConfirmedPage />,
                     },
                 ],
             },

@@ -1,0 +1,84 @@
+.booking-confirmed-page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3rem;
+}
+
+.booking-confirmed-page__card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+}
+
+.booking-confirmed-page__eyebrow {
+    margin: 0 0 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    color: #16a34a;
+    font-size: 0.85rem;
+}
+
+.booking-confirmed-page__title {
+    margin: 0 0 1rem;
+    font-size: clamp(1.8rem, 2.5vw, 2.3rem);
+    color: #111827;
+}
+
+.booking-confirmed-page__text {
+    color: #6b7280;
+}
+
+.booking-confirmed-page__error {
+    color: #991b1b;
+    font-weight: 600;
+}
+
+.booking-confirmed-page__summary {
+    margin-top: 1.25rem;
+}
+
+.booking-confirmed-page__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.booking-confirmed-page__row--top {
+    align-items: flex-start;
+}
+
+.booking-confirmed-page__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.booking-confirmed-page__chip {
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    background: #f3f4f6;
+    font-weight: 700;
+    color: #111827;
+}
+
+.booking-confirmed-page__actions {
+    margin-top: 1.5rem;
+}
+
+.booking-confirmed-page__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: 14px;
+    padding: 0.95rem 1.2rem;
+    font-weight: 700;
+    background: #7c3aed;
+    color: #ffffff;
+}

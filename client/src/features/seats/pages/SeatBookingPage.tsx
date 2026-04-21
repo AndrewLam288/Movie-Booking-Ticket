@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import SeatGrid from '../components/SeatGrid';
 import SeatLegend from '../components/SeatLegend';
 import SeatBookingSummary from '../components/SeatBookingSummary';
@@ -25,6 +25,7 @@ function buildShowtimeLabel(showtime: ShowtimeSummary): string {
 
 export default function SeatBookingPage() {
     const navigate = useNavigate();
+    const location = useLocation();
     const { movieId } = useParams<'movieId'>();
     const { user } = useAuth();
 
@@ -88,17 +89,27 @@ export default function SeatBookingPage() {
     const {
         roomName,
         seats,
-        selectedSeatIds,
         selectedLabels,
         pendingSeatIds,
         loading,
         bookingLoading,
         error,
-        bookingResult,
         toggleSeat,
-        confirmBooking,
         clearSelection,
     } = useSeatBooking(selectedShowtimeId, holderKey);
+
+    function handleContinueToCheckout() {
+        if (!selectedShowtimeId || selectedLabels.length === 0) {
+            return;
+        }
+
+        navigate(`/checkout/showtimes/${selectedShowtimeId}`, {
+            state: {
+                movieId: parsedMovieId,
+                from: location.pathname,
+            },
+        });
+    }
 
     if (!Number.isFinite(parsedMovieId)) {
         return <div className="seat-booking-page">Invalid movie id.</div>;
@@ -111,7 +122,7 @@ export default function SeatBookingPage() {
                     <p className="seat-booking-page__eyebrow">Seat Booking</p>
                     <h1 className="seat-booking-page__title">Choose Your Seats</h1>
                     <p className="seat-booking-page__subtitle">
-                        Select a showtime, then hold seats and confirm your booking.
+                        Select a showtime, hold seats, then continue to checkout.
                     </p>
                 </div>
 
@@ -168,7 +179,13 @@ export default function SeatBookingPage() {
                     ) : (
                         <SeatGrid
                             seats={seats}
-                            selectedSeatIds={selectedSeatIds}
+                            selectedSeatIds={seats
+                                .filter(
+                                    (seat) =>
+                                        seat.status === 'HELD' &&
+                                        seat.heldBySessionId === holderKey
+                                )
+                                .map((seat) => seat.seatId)}
                             pendingSeatIds={pendingSeatIds}
                             onSeatClick={toggleSeat}
                         />
@@ -178,9 +195,9 @@ export default function SeatBookingPage() {
                 <SeatBookingSummary
                     roomName={roomName}
                     selectedLabels={selectedLabels}
-                    bookingCode={bookingResult?.bookingCode}
                     bookingLoading={bookingLoading}
-                    onConfirm={confirmBooking}
+                    primaryButtonLabel="Continue to Checkout"
+                    onConfirm={handleContinueToCheckout}
                     onClear={clearSelection}
                 />
             </div>

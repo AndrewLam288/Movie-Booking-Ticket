@@ -42,3 +42,9 @@ export async function createBooking(
         payload
     );
 }
+
+export async function getBookingByCode(
+    bookingCode: string
+): Promise<BookingResponseDto> {
+    return apiGet<BookingResponseDto>(`/bookings/${bookingCode}`);
+}
