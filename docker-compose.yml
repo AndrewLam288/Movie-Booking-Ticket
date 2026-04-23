@@ -14,7 +14,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432"
+      - "5433:5432"
       # mount a volume to persist the data of the database even if the container is stopped or removed. 
       # The data will be stored in the local directory of the host machine. 
     volumes:

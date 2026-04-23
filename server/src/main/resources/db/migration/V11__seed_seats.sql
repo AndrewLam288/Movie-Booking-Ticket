@@ -24,9 +24,7 @@ FROM
         SELECT 5 UNION ALL
         SELECT 6 UNION ALL
         SELECT 7 UNION ALL
-        SELECT 8 UNION ALL
-        SELECT 9 UNION ALL
-        SELECT 10
+        SELECT 8
     ) r
         CROSS JOIN
     (
