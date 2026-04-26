@@ -7,10 +7,13 @@ import com.andrewlam.server.mapper.CinemaMapper;
 import com.andrewlam.server.model.Cinema;
 import com.andrewlam.server.repository.CinemaRepository;
 import com.andrewlam.server.service.CinemaService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,14 +28,16 @@ public class CinemaServiceImpl implements CinemaService {
     }
 
     @Override
+    @Cacheable(cacheNames = "cinemasList")
     public List<CinemaSummaryResponseDto> getAllCinemas() {
         return cinemaRepository.findAllByIsActiveTrueOrderByNameAsc()
                 .stream()
                 .map(cinemaMapper::toSummaryResponseDto)
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
+    @Cacheable(cacheNames = "cinemaDetail")
     public CinemaDetailResponseDto getCinemaById(Long cinemaId) {
         Cinema cinema = cinemaRepository.findByIdAndIsActiveTrue(cinemaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cinema not found with id: " + cinemaId));

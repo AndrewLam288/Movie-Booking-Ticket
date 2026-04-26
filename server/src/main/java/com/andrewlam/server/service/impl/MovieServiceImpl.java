@@ -7,10 +7,13 @@ import com.andrewlam.server.mapper.MovieMapper;
 import com.andrewlam.server.model.Movie;
 import com.andrewlam.server.repository.MovieRepository;
 import com.andrewlam.server.service.MovieService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,14 +28,16 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    @Cacheable(cacheNames = "moviesList")
     public List<MovieSummaryResponseDto> getAllMovies() {
         return movieRepository.findAllByOrderByReleaseDateDesc()
                 .stream()
                 .map(movieMapper::toMovieSummaryResponseDto)
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
+    @Cacheable(cacheNames = "movieDetail")
     public MovieDetailResponseDto getMovieDetailById(Long movieId) {
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new MovieNotFoundException(movieId));
