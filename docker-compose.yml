@@ -1,24 +1,21 @@
 services:
-
-# This service is for the PostgreSQL database.
   postgres:
     image: postgres:16
     container_name: movie-booking-postgres
-    # restart policty to ensure container will turn back on if docker restarts. 
-    # Only if intention is to stop the container, it will not turn back on. 
     restart: unless-stopped
-    # take the environment variables from the .env file
     environment:
-    # tránh hardcode, lấy từ .env
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5433:5432"
-      # mount a volume to persist the data of the database even if the container is stopped or removed. 
-      # The data will be stored in the local directory of the host machine. 
     volumes:
       - movie_booking_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7-alpine
@@ -28,6 +25,78 @@ services:
       - "6379:6379"
     volumes:
       - movie_booking_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: movie-booking-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      SERVER_PORT: 8080
+      APP_NAME: ${APP_NAME:-movie-booking-server}
+
+      DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_DRIVER: org.postgresql.Driver
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+      FRONTEND_URL: http://localhost:5173
+
+      JPA_SHOW_SQL: ${JPA_SHOW_SQL:-true}
+      JPA_FORMAT_SQL: ${JPA_FORMAT_SQL:-true}
+
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ACCESS_TOKEN_EXPIRATION_MS: ${JWT_ACCESS_TOKEN_EXPIRATION_MS}
+      JWT_ISSUER: ${JWT_ISSUER}
+
+      SEAT_HOLD_DURATION_MINUTES: ${SEAT_HOLD_DURATION_MINUTES:-10}
+      SEAT_HOLD_CLEANUP_FIXED_DELAY_MS: ${SEAT_HOLD_CLEANUP_FIXED_DELAY_MS:-30000}
+
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_FROM: ${MAIL_FROM}
+      MAIL_SMTP_AUTH: ${MAIL_SMTP_AUTH}
+      MAIL_SMTP_STARTTLS_ENABLE: ${MAIL_SMTP_STARTTLS_ENABLE}
+
+      BOOKING_CONFIRMATION_STREAM_KEY: ${BOOKING_CONFIRMATION_STREAM_KEY}
+      BOOKING_CONFIRMATION_CONSUMER_GROUP: ${BOOKING_CONFIRMATION_CONSUMER_GROUP}
+      BOOKING_CONFIRMATION_CONSUMER_NAME: ${BOOKING_CONFIRMATION_CONSUMER_NAME}
+      BOOKING_CONFIRMATION_BATCH_SIZE: ${BOOKING_CONFIRMATION_BATCH_SIZE}
+      BOOKING_CONFIRMATION_FIXED_DELAY_MS: ${BOOKING_CONFIRMATION_FIXED_DELAY_MS}
+
+      LOG_LEVEL_ROOT: ${LOG_LEVEL_ROOT:-INFO}
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:8080/api/v1
+    container_name: movie-booking-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+
 volumes:
   movie_booking_postgres_data:
   movie_booking_redis_data:
