@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../features/auth/context/AuthContext";
+import { useAuth } from "../../features/auth/context/useAuth";
 import { getCinemas } from "../../features/cinemas/api/cinemasApi";
 import type { CinemaSummary } from "../../features/cinemas/types/cinema";
 import "./CommonHeader.css";

@@ -5,7 +5,7 @@ import SeatLegend from '../components/SeatLegend';
 import SeatBookingSummary from '../components/SeatBookingSummary';
 import { useSeatBooking } from '../hooks/useSeatBooking';
 import './SeatBookingPage.css';
-import { useAuth } from '../../auth/context/AuthContext';
+import { useAuth } from "../../auth/context/useAuth";
 import { getShowtimesByMovieId } from '../../showtimes/api/showtimesApi';
 import type { ShowtimeSummary } from '../../showtimes/types/showtime';
 

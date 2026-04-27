@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../../auth/context/AuthContext";
+import { useAuth } from "../../auth/context/useAuth";
 import { createBooking, getSeatMap } from "../api/seatApi";
 import { getShowtimeById } from "../../showtimes/api/showtimesApi";
 import type { ShowtimeDetail } from "../../showtimes/types/showtime";

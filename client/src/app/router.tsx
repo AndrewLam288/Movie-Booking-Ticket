@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import RootWithProviders from "./providers/RootWithProviders";
+import RootWithProviders from "./RootWithProviders";
 import MoviesPage from "../features/movies/pages/MoviesPage";
 import MovieDetailPage from "../features/movies/pages/MovieDetailPage";
 import LoginPage from "../features/auth/pages/LoginPage";
