@@ -46,8 +46,6 @@ export default function CommonHeader() {
     const navItems = [
         { label: "Movies", to: "/movies" },
         { label: "Cinemas", to: "/cinemas" },
-        { label: "Food & Drinks", to: "/food-drinks" },
-        { label: "Cart", to: "/cart" },
         ...(isAuthenticated
             ? [{ label: "My Account", to: "/account" }]
             : [{ label: "Sign In", to: "/sign-in" }]),

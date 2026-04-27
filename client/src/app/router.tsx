@@ -10,7 +10,6 @@ import { AuthProvider } from "../features/auth/context/AuthContext";
 import CinemasPage from "../features/cinemas/pages/CinemasPage";
 import CinemaDetailPage from "../features/cinemas/pages/CinemaDetailPage";
 import ShowtimeDetailPage from "../features/showtimes/pages/ShowtimeDetailPage";
-import PlaceholderPage from "../pages/PlaceholderPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import SeatBookingPage from "../features/seats/pages/SeatBookingPage";
 import CheckoutPage from "../features/seats/pages/CheckoutPage";
@@ -53,14 +52,6 @@ export const router = createBrowserRouter([
             {
                 path: "showtimes/:showtimeId",
                 element: <ShowtimeDetailPage />,
-            },
-            {
-                path: "food-drinks",
-                element: <PlaceholderPage title="Food & Drinks" />,
-            },
-            {
-                path: "cart",
-                element: <PlaceholderPage title="Cart" />,
             },
             {
                 path: "sign-in",
