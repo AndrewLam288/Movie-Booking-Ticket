@@ -1,12 +1,11 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import AppLayout from "../components/layout/AppLayout";
+import RootWithProviders from "./providers/RootWithProviders";
 import MoviesPage from "../features/movies/pages/MoviesPage";
 import MovieDetailPage from "../features/movies/pages/MovieDetailPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import RegisterPage from "../features/auth/pages/RegisterPage";
 import AccountPage from "../features/auth/pages/AccountPage";
 import ProtectedRoute from "../features/auth/components/ProtectedRoute";
-import { AuthProvider } from "../features/auth/context/AuthContext";
 import CinemasPage from "../features/cinemas/pages/CinemasPage";
 import CinemaDetailPage from "../features/cinemas/pages/CinemaDetailPage";
 import ShowtimeDetailPage from "../features/showtimes/pages/ShowtimeDetailPage";
@@ -14,14 +13,6 @@ import NotFoundPage from "../pages/NotFoundPage";
 import SeatBookingPage from "../features/seats/pages/SeatBookingPage";
 import CheckoutPage from "../features/seats/pages/CheckoutPage";
 import BookingConfirmedPage from "../features/seats/pages/BookingConfirmedPage";
-
-function RootWithProviders() {
-    return (
-        <AuthProvider>
-            <AppLayout />
-        </AuthProvider>
-    );
-}
 
 export const router = createBrowserRouter([
     {
