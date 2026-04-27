@@ -10,6 +10,17 @@ app:
     allowed-origins:
       - ${FRONTEND_URL:http://localhost:5173}
 
+  mail:
+    from: ${MAIL_FROM:${MAIL_USERNAME}}
+
+  queue:
+    booking-confirmation:
+      stream-key: ${BOOKING_CONFIRMATION_STREAM_KEY:booking-confirmation-stream}
+      consumer-group: ${BOOKING_CONFIRMATION_CONSUMER_GROUP:booking-confirmation-group}
+      consumer-name: ${BOOKING_CONFIRMATION_CONSUMER_NAME:booking-confirmation-worker}
+      batch-size: ${BOOKING_CONFIRMATION_BATCH_SIZE:10}
+      fixed-delay-ms: ${BOOKING_CONFIRMATION_FIXED_DELAY_MS:3000}
+
 security:
   jwt:
     secret: ${JWT_SECRET}
@@ -45,6 +56,21 @@ spring:
 
   flyway:
     enabled: true
+
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: ${MAIL_SMTP_AUTH:true}
+          starttls:
+            enable: ${MAIL_SMTP_STARTTLS_ENABLE:true}
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
 
 logging:
   level:

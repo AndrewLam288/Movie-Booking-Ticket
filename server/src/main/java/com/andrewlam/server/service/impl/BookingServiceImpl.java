@@ -24,6 +24,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import com.andrewlam.server.common.event.BookingConfirmedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -40,6 +42,7 @@ public class BookingServiceImpl implements BookingService {
     private final UserRepository userRepository;
     private final SeatService seatService;
     private final BookingMapper bookingMapper;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public BookingServiceImpl(
             BookingRepository bookingRepository,
@@ -48,7 +51,8 @@ public class BookingServiceImpl implements BookingService {
             ShowtimeRepository showtimeRepository,
             UserRepository userRepository,
             SeatService seatService,
-            BookingMapper bookingMapper
+            BookingMapper bookingMapper,
+            ApplicationEventPublisher applicationEventPublisher
     ) {
         this.bookingRepository = bookingRepository;
         this.bookingSeatRepository = bookingSeatRepository;
@@ -57,6 +61,7 @@ public class BookingServiceImpl implements BookingService {
         this.userRepository = userRepository;
         this.seatService = seatService;
         this.bookingMapper = bookingMapper;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Override
@@ -118,6 +123,8 @@ public class BookingServiceImpl implements BookingService {
 
             seatService.consumeHeldSeatsAfterBooking(showtime.getId(), uniqueSeatIds, holderKey);
             seatService.publishBookedSeats(showtime.getId(), uniqueSeatIds);
+
+            applicationEventPublisher.publishEvent(new BookingConfirmedEvent(savedBooking.getId()));
 
             return bookingMapper.toResponseDto(savedBooking);
 
