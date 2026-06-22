@@ -9,9 +9,10 @@ export interface SeatWebSocketSubscription {
 
 function getWebSocketUrl(): string {
     const apiBaseUrl =
-        import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080/api/v1";
+        import.meta.env.VITE_API_BASE_URL ?? "/api/v1";
 
-    const apiUrl = new URL(apiBaseUrl);
+    const apiUrl = new URL(apiBaseUrl, window.location.origin);
+
     const protocol = apiUrl.protocol === "https:" ? "wss:" : "ws:";
 
     return `${protocol}//${apiUrl.host}/ws`;

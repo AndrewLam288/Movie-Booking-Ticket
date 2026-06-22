@@ -59,7 +59,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/showtimes/*/seats/*/hold").authenticated()
                         .requestMatchers("/api/v1/bookings/**").authenticated()
                         .requestMatchers("/ws", "/ws/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/api/**", "/actuator/**").authenticated()
+                        .anyRequest().permitAll()
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
